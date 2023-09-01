@@ -8,17 +8,18 @@ public class Cadeteria
     private List<Cadete> listadeCadetes;
     private List<Pedido> listadePedidos;
 
-    public string Nombre { get => nombre; }
-    public string Telefono { get => telefono; }
-    public List<Cadete> ListadeCadetes { set => listadeCadetes = value; }
+    public string Nombre { get => nombre; set => nombre = value; }
+    public string Telefono { get => telefono; set => telefono = value; }
+    public List<Cadete> ListadeCadetes { get => listadeCadetes; set => listadeCadetes = value; }
+    public List<Pedido> ListadePedidos { get => listadePedidos; set => listadePedidos = value; }
 
-    public Cadeteria() { }
+    
 
     public Cadeteria(string nombre, string telefono)
     {
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.listadePedidos = new List<Pedido>();
+        this.Nombre = nombre;
+        this.Telefono = telefono;
+        this.ListadePedidos = new List<Pedido>();
     }
 
     public Pedido NuevoPedido()
@@ -27,19 +28,18 @@ public class Cadeteria
         string? nombreCliente = "", direccionCliente = "", telefonoCl = "", datosRefCl = "";
         string? obsPedido = "";
         Console.WriteLine("\n------------------------ Datos del Cliente ------------------------------\n");
-        Console.WriteLine(">Nombre: ");
+        Console.WriteLine("Nombre: ");
         nombreCliente = Console.ReadLine();
-        Console.WriteLine(">Telefono: ");
+        Console.WriteLine("Telefono: ");
         telefonoCl = Console.ReadLine();
-        Console.WriteLine(">Direccion: ");
+        Console.WriteLine("Direccion: ");
         direccionCliente = Console.ReadLine();
-        Console.WriteLine(">Datos de Rerencia del Domicilio: ");
+        Console.WriteLine("Datos de Rerencia del Domicilio: ");
         datosRefCl = Console.ReadLine();
-        Console.WriteLine(">Observaciones del Pedido: ");
+        Console.WriteLine("Observaciones del Pedido: ");
         obsPedido = Console.ReadLine();
 
         Cliente cl = new Cliente(nombreCliente, direccionCliente, telefonoCl, datosRefCl);
-
         Pedido ped = new Pedido(obsPedido, cl);
 
         return ped;
@@ -49,20 +49,18 @@ public class Cadeteria
 
     public int CantidadPedidos()
     {
-
-        return listadePedidos.Count;
+        return ListadePedidos.Count;
     }
 
 
     public void AgregarPedido(Pedido p)
     {
-
-        listadePedidos.Add(p);
+        ListadePedidos.Add(p);
     }
 
     public void MostrarPedidos(){
 
-        foreach (var p in listadePedidos)
+        foreach (var p in ListadePedidos)
         {
             Console.WriteLine($">Numero: {p.Nro}");
             Console.WriteLine($">Observaciones: {p.Observaciones}");

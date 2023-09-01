@@ -20,6 +20,7 @@ public class Pedido
     public string Observaciones { get => observaciones; }
     public EstadoPedido Estado { get => estado; }
 
+public Pedido(){}
     public Pedido(string observaciones, Cliente cliente){
         this.nro += 1;
         this.observaciones = observaciones;
