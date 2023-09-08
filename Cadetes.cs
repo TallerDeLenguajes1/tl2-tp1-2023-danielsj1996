@@ -68,7 +68,7 @@ public class Cadete
         int CantPedEntregados = 0;
         foreach (var ped in listadepedidos)
         {
-            if (ped.Estado == EstadoPedido.Pendiente)
+            if (ped.Estado == EstadoPedido.Entregado)
             {
                 CantPedEntregados++;
             }
@@ -80,7 +80,8 @@ public class Cadete
 
     public double JornalACobrar()
     {
-        return ((double)500 * CantidadDeEntregados());
+        double Jornal=500 * CantidadDeEntregados();
+        return Jornal;
     }
 
 }

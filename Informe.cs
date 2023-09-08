@@ -29,7 +29,7 @@ public class Informe
         this.cantPedidosEntregadosporCadetes = cantPedidosEntregadosporCadetes;
         this.montosCadetes = montosCadetes;
         this.totalPedidosEntregados = totalPedidosEntregados;
-        this.cantPromedioDePedidosEntregados = cantPromedioDePedidosEntregados;
+        this.cantPromedioDePedidosEntregados = totalPedidosEntregados/cantCadetes;
     }
 
 }

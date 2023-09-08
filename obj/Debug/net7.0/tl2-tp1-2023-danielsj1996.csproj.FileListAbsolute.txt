@@ -1,0 +1,15 @@
+C:\tl2-tp1-2023-danielsj1996\bin\Debug\net7.0\tl2-tp1-2023-danielsj1996.exe
+C:\tl2-tp1-2023-danielsj1996\bin\Debug\net7.0\tl2-tp1-2023-danielsj1996.deps.json
+C:\tl2-tp1-2023-danielsj1996\bin\Debug\net7.0\tl2-tp1-2023-danielsj1996.runtimeconfig.json
+C:\tl2-tp1-2023-danielsj1996\bin\Debug\net7.0\tl2-tp1-2023-danielsj1996.dll
+C:\tl2-tp1-2023-danielsj1996\bin\Debug\net7.0\tl2-tp1-2023-danielsj1996.pdb
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.csproj.AssemblyReference.cache
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.GeneratedMSBuildEditorConfig.editorconfig
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.AssemblyInfoInputs.cache
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.AssemblyInfo.cs
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.csproj.CoreCompileInputs.cache
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.dll
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\refint\tl2-tp1-2023-danielsj1996.dll
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.pdb
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\tl2-tp1-2023-danielsj1996.genruntimeconfig.cache
+C:\tl2-tp1-2023-danielsj1996\obj\Debug\net7.0\ref\tl2-tp1-2023-danielsj1996.dll

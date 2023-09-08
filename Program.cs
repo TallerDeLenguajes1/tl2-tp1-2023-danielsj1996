@@ -26,10 +26,10 @@ internal class Program
             Console.WriteLine("******************** Bienvenidos ********************");
             Console.WriteLine("******************** Sistema de Pedidos de Mostaza ********************");
             Console.WriteLine("a) dar de alta pedidos");
-            Console.WriteLine("b) asignarlos a cadetes");
-            Console.WriteLine("c) cambiarlos de estado");
-            Console.WriteLine("d) reasignar el pedido a otro cadete.");
-            Console.WriteLine("e) Salir.");
+            Console.WriteLine("b) cambiarlos de estado");
+            Console.WriteLine("c) asignarlos a cadetes");
+            Console.WriteLine("d) Salir.");
+            
 
             opcion = Console.ReadLine();
 
@@ -41,18 +41,18 @@ internal class Program
                     int idCadete = 0;
                     string idCad = "";
                     NroPedido++;
-                    Console.WriteLine("\n$********** Datos del Cliente **********\n");
-                    Console.WriteLine("> Nombre: ");
+                    Console.WriteLine("\n********** Datos del Cliente **********\n");
+                    Console.WriteLine(" Nombre: ");
                     nombreCl = Console.ReadLine();
-                    Console.WriteLine("> Direccion: ");
+                    Console.WriteLine(" Direccion: ");
                     direccionCl = Console.ReadLine();
-                    Console.WriteLine("> Telefono: ");
+                    Console.WriteLine(" Telefono: ");
                     telefonoCl = Console.ReadLine();
-                    Console.WriteLine("> Datos de Referencia de su Domicilio: ");
+                    Console.WriteLine(" Datos de Referencia de su Domicilio: ");
                     datosRefDirCliente = Console.ReadLine();
-                    Console.WriteLine("> Observaciones sobre su Pedido: ");
+                    Console.WriteLine(" Observaciones sobre su Pedido: ");
                     obsPedido = Console.ReadLine();
-                    Console.WriteLine("$\nNro Pedido: {nroPedido}\n");
+                    Console.WriteLine($"\nNro Pedido: {NroPedido}\n");
                     MostrarCantidadPedidosDeCadetes(Mostaza);
                     do
                     {
