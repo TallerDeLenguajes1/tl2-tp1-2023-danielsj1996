@@ -13,7 +13,7 @@ public class Cliente
     public string Telefono { get => telefono; }
     public string DatosReferenciaDireccion { get => datosReferenciaDireccion; }
 
-public Cliente(){}
+
 
     public Cliente(string nombre, string direccion, string telefono, string datosReferenciaDireccion)
     {

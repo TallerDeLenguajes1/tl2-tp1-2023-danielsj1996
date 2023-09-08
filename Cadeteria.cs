@@ -6,65 +6,108 @@ public class Cadeteria
     private string nombre;
     private string telefono;
     private List<Cadete> listadeCadetes;
-    private List<Pedido> listadePedidos;
 
     public string Nombre { get => nombre; set => nombre = value; }
     public string Telefono { get => telefono; set => telefono = value; }
     public List<Cadete> ListadeCadetes { get => listadeCadetes; set => listadeCadetes = value; }
-    public List<Pedido> ListadePedidos { get => listadePedidos; set => listadePedidos = value; }
 
-    
+
+    public Cadeteria() { }
 
     public Cadeteria(string nombre, string telefono)
     {
         this.Nombre = nombre;
         this.Telefono = telefono;
-        this.ListadePedidos = new List<Pedido>();
+
+    }
+    private int CantCadetes()
+    {
+        return ListadeCadetes.Count;
     }
 
-    public Pedido NuevoPedido()
+    public void AgregarListaCadetes(List<Cadete> listadeCadetes)
+    {
+        this.listadeCadetes = listadeCadetes;
+    }
+
+    public bool NuevoPedido(int nroPedido, string obsPedido, int CadeteID, string nombreCliente, string DireccionCliente, string telefonoCl, string datosRefCl)
     {
 
-        string? nombreCliente = "", direccionCliente = "", telefonoCl = "", datosRefCl = "";
-        string? obsPedido = "";
-        Console.WriteLine("\n------------------------ Datos del Cliente ------------------------------\n");
-        Console.WriteLine("Nombre: ");
-        nombreCliente = Console.ReadLine();
-        Console.WriteLine("Telefono: ");
-        telefonoCl = Console.ReadLine();
-        Console.WriteLine("Direccion: ");
-        direccionCliente = Console.ReadLine();
-        Console.WriteLine("Datos de Rerencia del Domicilio: ");
-        datosRefCl = Console.ReadLine();
-        Console.WriteLine("Observaciones del Pedido: ");
-        obsPedido = Console.ReadLine();
-
-        Cliente cl = new Cliente(nombreCliente, direccionCliente, telefonoCl, datosRefCl);
-        Pedido ped = new Pedido(obsPedido, cl);
-
-        return ped;
-
-
+        Pedido ped = new Pedido(nroPedido, obsPedido, nombreCliente, DireccionCliente, telefonoCl, datosRefCl);
+        bool AsignarPedido = AsignarPedidoCadete(CadeteID, ped);
+        return AsignarPedido;
     }
-
-    public int CantidadPedidos()
+    public int IdMaximo()
     {
-        return ListadePedidos.Count;
+        return (listadeCadetes.Count - 1);
     }
-
-
-    public void AgregarPedido(Pedido p)
+    public bool AsignarPedidoCadete(int idCadete, Pedido pedidoTomado)
     {
-        ListadePedidos.Add(p);
-    }
-
-    public void MostrarPedidos(){
-
-        foreach (var p in ListadePedidos)
+        bool pedidoAsignado = false;
+        foreach (var cad in listadeCadetes)
         {
-            Console.WriteLine($">Numero: {p.Nro}");
-            Console.WriteLine($">Observaciones: {p.Observaciones}");
-            p.VerDatosCliente();
+            if (cad.Id == idCadete)
+            {
+                cad.AgregarPedido(pedidoTomado);
+                pedidoAsignado = true;
+            }
+
         }
+        return pedidoAsignado;
+    }
+    public bool CambiarEstadoDelPedido(int nroPedido)
+    {
+        foreach (var cad in listadeCadetes)
+        {
+            if (cad.CambiarEstadoDelPedido(nroPedido))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool ReasignarPedidoACadete(int nroPedido, int idCadete)
+    {
+        bool reasignacionOk = false;
+        Pedido pedidoAReasignar = null;
+        foreach (var cad in listadeCadetes)
+        {
+            pedidoAReasignar = cad.ListadePedidos.Find(ped => ped.Nro == nroPedido);
+            if (pedidoAReasignar != null)
+            {
+                cad.ListadePedidos.Remove(pedidoAReasignar);
+                break;
+            }
+        }
+        if (pedidoAReasignar != null && pedidoAReasignar.Estado != EstadoPedido.Entregado)
+        {
+            foreach (var cad in listadeCadetes)
+            {
+                if (cad.Id == idCadete)
+                {
+                    cad.AgregarPedido(pedidoAReasignar);
+                    reasignacionOk = true;
+                    break;
+                }
+
+            }
+        }
+        return reasignacionOk;
+    }
+
+    public Informe CrearInforme()
+    {
+        List<int> idCadetes = listadeCadetes.Select(cad => cad.Id).ToList();
+        List<string> NombreDeCadetes = listadeCadetes.Select(cad => cad.Nombre).ToList();
+        List<int> cantPedidosEntregadosporCadetes = listadeCadetes.Select(cad => cad.CantidadDeEntregados()).ToList();
+        List<double> montosCadetes = listadeCadetes.Select(cad => cad.JornalACobrar()).ToList();
+        int totalPedidosEntregados = listadeCadetes.Sum(cad => cad.CantidadDeEntregados());
+        int cantPromedioDePedidosEntregados = (int)cantPedidosEntregadosporCadetes.Average();
+        
+        
+        Informe informe = new Informe(CantCadetes(), idCadetes, NombreDeCadetes, cantPedidosEntregadosporCadetes, montosCadetes, totalPedidosEntregados, cantPromedioDePedidosEntregados);
+        return informe;
+
     }
 }

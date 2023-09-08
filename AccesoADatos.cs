@@ -1,21 +1,27 @@
 namespace EmpCadeteria;
 
-public static class  AccesoDatosCadeteria
+public static class AccesoDatosCadeteria
 {
-    private static bool ExisteArchivoDatos(string ruta){
-        FileInfo f = new FileInfo(ruta);
+    private static bool ExisteArchivoDatos(string ruta)
+    {
+        FileInfo archivo = new FileInfo(ruta);
 
-        if(f.Exists && f.Length > 0){
+        if (archivo.Exists && archivo.Length > 0)
+        {
             return true;
-        }else{
+        }
+        else
+        {
             return false;
         }
     }
 
-    public static Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria){
-        Cadeteria cadeteriaSinInfo = new Cadeteria( "vacio","vacio");
+    public static Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria)
+    {
+        Cadeteria cadeteriaSinInfo = new Cadeteria();
 
-        if(ExisteArchivoDatos(rutaDatosCadeteria)){
+        if (ExisteArchivoDatos(rutaDatosCadeteria))
+        {
             string[] datosCadeteria;
 
             using (StreamReader f = new StreamReader(rutaDatosCadeteria))
@@ -25,21 +31,26 @@ public static class  AccesoDatosCadeteria
 
             Cadeteria cadeteriaConInfo = new Cadeteria(datosCadeteria[0], datosCadeteria[1]);
             return cadeteriaConInfo;
-        } else{
+        }
+        else
+        {
             return cadeteriaSinInfo;
         }
-    } 
+    }
 
-    public static List<Cadete> ObtenerListaCadetes(string rutaDatosCadetes){
+    public static List<Cadete> ObtenerListaCadetes(string rutaDatosCadetes)
+    {
         List<Cadete> cadetes = new List<Cadete>();
 
-        if(ExisteArchivoDatos(rutaDatosCadetes)){
+        if (ExisteArchivoDatos(rutaDatosCadetes))
+        {
             string linea = "";
             string[] datosCadete;
 
-            using(StreamReader f = new StreamReader(rutaDatosCadetes))
+            using (StreamReader f = new StreamReader(rutaDatosCadetes))
             {
-                while((linea = f.ReadLine()) != null){
+                while ((linea = f.ReadLine()) != null)
+                {
                     datosCadete = linea.Split(',');
                     Cadete cadete = new Cadete(datosCadete[0], datosCadete[1], datosCadete[2], datosCadete[3]);
                     cadetes.Add(cadete);
