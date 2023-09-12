@@ -1,8 +1,14 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace EmpCadeteria;
 
-public static class AccesoDatosCadeteria
+public abstract class AccesoDatosCadeteria
 {
-    private static bool ExisteArchivoDatos(string ruta)
+    public abstract Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria);
+
+    public abstract List<Cadete> ObtenerListaCadetes(string rutaDatosCadetes);
+    public bool ExisteArchivoDatos(string ruta)
     {
         FileInfo archivo = new FileInfo(ruta);
 
@@ -15,30 +21,25 @@ public static class AccesoDatosCadeteria
             return false;
         }
     }
+}
+public class AccesoCSV : AccesoDatosCadeteria
+{
 
-    public static Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria)
+    public override Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria)
     {
-        Cadeteria cadeteriaSinInfo = new Cadeteria();
-
-        if (ExisteArchivoDatos(rutaDatosCadeteria))
+        string[] datosCadeteria;
+        using (StreamReader f = new StreamReader(rutaDatosCadeteria))
         {
-            string[] datosCadeteria;
-
-            using (StreamReader f = new StreamReader(rutaDatosCadeteria))
-            {
-                datosCadeteria = f.ReadLine().Split(',');
-            }
-
-            Cadeteria cadeteriaConInfo = new Cadeteria(datosCadeteria[0], datosCadeteria[1]);
-            return cadeteriaConInfo;
+            datosCadeteria = f.ReadLine().Split(',');
         }
-        else
-        {
-            return cadeteriaSinInfo;
-        }
+
+        Cadeteria cadeteria = new Cadeteria(datosCadeteria[0], datosCadeteria[1]);
+        return cadeteria;
     }
 
-    public static List<Cadete> ObtenerListaCadetes(string rutaDatosCadetes)
+
+
+    public override List<Cadete> ObtenerListaCadetes(string rutaDatosCadetes)
     {
         List<Cadete> cadetes = new List<Cadete>();
 
@@ -52,13 +53,30 @@ public static class AccesoDatosCadeteria
                 while ((linea = f.ReadLine()) != null)
                 {
                     datosCadete = linea.Split(',');
-                    Cadete cadete = new Cadete(datosCadete[0], datosCadete[1], datosCadete[2], datosCadete[3]);
+                    Cadete cadete = new Cadete(Convert.ToInt32(datosCadete[0]), datosCadete[1], datosCadete[2], datosCadete[3]);
                     cadetes.Add(cadete);
                 }
             }
 
         }
 
+        return cadetes;
+    }
+}
+
+public class AccesoAJson : AccesoDatosCadeteria
+{
+    public override Cadeteria ObtenerInfoCadeteria(string rutaDatosCadeteria)
+    {
+        string infoCadeteria = File.ReadAllText(rutaDatosCadeteria);
+        Cadeteria cadeteriaConInfo=JsonSerializer.Deserialize<Cadeteria>(infoCadeteria);
+        return cadeteriaConInfo;
+    }
+
+    public override List<Cadete> ObtenerListaCadetes(string rutaDatosCadete){
+        
+        string infoDeCadetes = File.ReadAllText(rutaDatosCadete);
+        List<Cadete> cadetes=JsonSerializer.Deserialize<List<Cadete>>(infoDeCadetes);
         return cadetes;
     }
 }
