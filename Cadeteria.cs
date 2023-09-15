@@ -10,7 +10,7 @@ public class Cadeteria
 
     public string Nombre { get => nombre; set => nombre = value; }
     public string Telefono { get => telefono; set => telefono = value; }
-    public List<Cadete> ListadeCadetes { get => listadeCadetes; set => listadeCadetes = value; }
+    public List<Cadete> ListadeCadetes { get => listadeCadetes; }
 
 
 
@@ -42,7 +42,7 @@ public class Cadeteria
         return agregado;
 
     }
-    public bool NuevoPedido(int nroPedido, string obsPedido, int CadeteID, string nombreCliente, string DireccionCliente, string telefonoCl, string datosRefCl)
+    public bool NuevoPedido(int nroPedido, string obsPedido, string nombreCliente, string DireccionCliente, string telefonoCl, string datosRefCl)
     {
         Pedido ped = new Pedido(nroPedido, obsPedido, nombreCliente, DireccionCliente, telefonoCl, datosRefCl);
         bool nuevoPedido = AgregarPedido(ped);
@@ -95,9 +95,9 @@ public class Cadeteria
             {
                 if (p.Nro == nroPedido && p.Estado != EstadoPedido.Entregado)
                 {
-                    p.vincularCadete(cad);
+                    p.VincularCadete(cad);
                 }
-                reasignacionOk = true
+                reasignacionOk = true;
             }
         }
 
@@ -109,7 +109,7 @@ public class Cadeteria
         int cant = 0;
         foreach (var p in listadePedidos)
         {
-            if ((p.existeCadete()) && (p.IdCadete() == idCadete) && (p.Estado == estado))
+            if ((p.ExisteCadete()) && (p.IdCadete() == idCadete) && (p.Estado == estado))
             {
                 cant++;
             }
@@ -135,7 +135,7 @@ public class Cadeteria
         List<double> montosCadetes = new List<double>();
         foreach (var cad in ListadeCadetes)
         {
-            cantPedidosEntregadosporCadetes.Add(CantPedidosCadete);
+            cantPedidosEntregadosporCadetes.Add(CantPedidosCadete(cad.Id,EstadoPedido.Entregado));
             montosCadetes.Add(JornalACobrar(cad.Id));
         }
         int totalPedidosEntregados = cantPedidosEntregadosporCadetes.Sum();

@@ -13,6 +13,7 @@ public class Pedido
     private string? observaciones;
     private EstadoPedido estado;
     private Cliente cliente;
+    private Cadete cadete;
 
 
     public int Nro { get => nro; }
@@ -31,17 +32,26 @@ public class Pedido
     }
 
 
-    public void VerDatosCliente()
+    public bool ExisteCadete()
     {
-        Console.WriteLine("\n************Datos del Cliente************\n");
-        Console.WriteLine($"\nNombre: {cliente.Nombre}\n");
-        Console.WriteLine($"\nDireccion: {cliente.Direccion}\n");
-        Console.WriteLine($"\nTelefono: {cliente.Telefono}\n");
-
+        if (cadete != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public int IdCadete()
+    {
+        return cadete.Id;
     }
     public void Entregado()
     {
         estado = EstadoPedido.Entregado;
     }
-
+public void VincularCadete(Cadete cad){
+    cadete=cad;
+}
 }

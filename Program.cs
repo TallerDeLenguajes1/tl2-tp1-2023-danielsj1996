@@ -1,18 +1,48 @@
 ﻿// See https://aka.ms/new-console-template for more information
-
 using EmpCadeteria;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        string rutaDatosCadeteria = "DatosCadeteria.csv";
-        string rutaDatosCadetes = "DatosCadetes.csv";
+        AccesoDatosCadeteria acceso;
+        Cadeteria Mostaza;
+        List<Cadete> listadeCadetes;
+        string acceder = "";
 
-        Cadeteria Mostaza = AccesoDatosCadeteria.ObtenerInfoCadeteria(rutaDatosCadeteria);
-        List<Cadete> listadeCadetes = AccesoDatosCadeteria.ObtenerListaCadetes(rutaDatosCadetes);
+        string rutaDatosCadeteria = "";
+        string rutaDatosCadetes = "";
+        do
+        {
+            Console.WriteLine("******************** Bienvenidos ********************");
+            Console.WriteLine("******************** Acceso a Datos ********************");
+            Console.WriteLine("******************** Seleccione a que Tipo de Datos quiere acceder ********************");
+            Console.WriteLine("a) Archivo CSV");
+            Console.WriteLine("b) Archivo JSON");
+            acceder = Console.ReadLine();
 
-        Mostaza.AgregarListaCadetes(listadeCadetes);
+        } while (acceder != "a" && acceder != "b");
+
+        if (acceder == "a")
+        {
+            rutaDatosCadeteria = "DatosCadeteria.csv";
+            rutaDatosCadetes = "DatosCadetes.csv";
+            acceso = new AccesoCSV();
+        }
+        else
+        {
+            rutaDatosCadeteria = "DatosCadeteria.Json";
+            rutaDatosCadetes = "DatosCadetes.Json";
+            acceso = new AccesoAJson();
+        }
+        if (acceso.ExisteArchivoDatos(rutaDatosCadeteria) && acceso.ExisteArchivoDatos(rutaDatosCadetes))
+        {
+            Mostaza = acceso.ObtenerInfoCadeteria(rutaDatosCadeteria);
+            listadeCadetes = acceso.ObtenerListaCadetes(rutaDatosCadetes);
+            Mostaza.AgregarListaCadetes(listadeCadetes);
+        
+
+
 
         //INTERFAZ
         string nombreCl = "", direccionCl = "", telefonoCl = "", datosRefDirCliente = "";
@@ -25,11 +55,12 @@ internal class Program
 
             Console.WriteLine("******************** Bienvenidos ********************");
             Console.WriteLine("******************** Sistema de Pedidos de Mostaza ********************");
-            Console.WriteLine("a) dar de alta pedidos");
-            Console.WriteLine("b) cambiarlos de estado");
-            Console.WriteLine("c) asignarlos a cadetes");
-            Console.WriteLine("d) Salir.");
-            
+            Console.WriteLine("A) Dar de alta pedidos\n");
+            Console.WriteLine("B) Asignar cadete a pedido\n");
+            Console.WriteLine("C) Cambiar estado del pedido\n");
+            Console.WriteLine("D) Reasignar pedido a otro cadete\n");
+            Console.WriteLine("E) Salir.");
+
 
             opcion = Console.ReadLine();
 
@@ -38,8 +69,6 @@ internal class Program
             switch (opcion)
             {
                 case "a":
-                    int idCadete = 0;
-                    string idCad = "";
                     NroPedido++;
                     Console.WriteLine("\n********** Datos del Cliente **********\n");
                     Console.WriteLine(" Nombre: ");
@@ -53,28 +82,52 @@ internal class Program
                     Console.WriteLine(" Observaciones sobre su Pedido: ");
                     obsPedido = Console.ReadLine();
                     Console.WriteLine($"\nNro Pedido: {NroPedido}\n");
-                    MostrarCantidadPedidosDeCadetes(Mostaza);
+
+                    if (Mostaza.NuevoPedido(NroPedido, obsPedido, nombreCl, direccionCl, telefonoCl, datosRefDirCliente))
+                    {
+                        Console.WriteLine("Nuevo pedido ingresado Correctamente\n");
+                    }
+                    break;
+                case "b":
+                    int idCadete = 0, nropedido = 0;
+                    string idCad = "", nro = "";
                     do
                     {
-                        Console.WriteLine("Ingresar el Id del Cadete para Asignar: ");
+                        MostrarCantidadPedidosDeCadetes(Mostaza);
+                        Console.Write("\n Ingrese el nro de pedido: ");
+                        nro = Console.ReadLine();
+                        Console.Write("\n Ingrese el id del Cadete: ");
                         idCad = Console.ReadLine();
-                    } while (!int.TryParse(idCad, out idCadete) || idCadete < 0 || idCadete > Mostaza.IdMaximo());
-                    if (Mostaza.NuevoPedido(NroPedido, obsPedido, idCadete, nombreCl, direccionCl, telefonoCl, datosRefDirCliente)) ;
-                    {
-                        Console.WriteLine("El pedido se agregó con Exito");
-                    }
+                        if (!int.TryParse(nro, out nropedido) || !int.TryParse(idCad, out idCadete))
+                        {
+                            Console.WriteLine("Error. Dato Invalido. \n");
+                        }
+                        else
+                        {
+                            if (idCadete < 0 || idCadete > Mostaza.IdMaximo())
+                            {
+                                Console.WriteLine("No existe un cadete con el ID ingresado \n");
+                            }
+                            else
+                            {
+                                if (Mostaza.AsignarCadeteAPedido(idCadete, nropedido))
+                                {
 
-
+                                    Console.WriteLine("\nEl Pedido se asigno correctamente al Cadete elegido\n");
+                                }
+                            }
+                        }
+                    } while (!int.TryParse(nro, out nropedido) || !int.TryParse(idCad, out idCadete) || idCadete < 0 || idCadete > Mostaza.IdMaximo());
                     break;
 
-                case "b":
+                case "c":
                     int nroPedidoACambiar;
-                    string nro = "";
+                    string nroped = "";
                     do
                     {
                         Console.Write("\n Ingrese el id del Pedido a Cambiar: ");
-                        nro = Console.ReadLine();
-                        if (!int.TryParse(nro, out nroPedidoACambiar))
+                        nroped = Console.ReadLine();
+                        if (!int.TryParse(nroped, out nroPedidoACambiar))
                         {
                             Console.WriteLine("Error. Dato Invalido. \n");
                         }
@@ -89,10 +142,11 @@ internal class Program
                                 Console.WriteLine("\nSe Cambió correctamente el estado del Pedido\n");
                             }
                         }
-                    } while (!int.TryParse(nro, out nroPedidoACambiar));
+                    } while (!int.TryParse(nroped, out nroPedidoACambiar));
                     break;
 
-                case "c":
+
+                case "d":
                     int nroPedidoAReasignar, idCadeteAReasignar;
                     string nroPedido = "", id = "";
                     do
@@ -130,19 +184,24 @@ internal class Program
 
                     break;
             }
-        } while (opcion != "d");
+        } while (opcion != "e");
         Informe informe = Mostaza.CrearInforme();
         MostrarInforme(informe);
 
 
+    }else
+    {
+        Console.WriteLine("\nNo existen los archivos para iniciar la aplicacion");
     }
+}
+
 
     private static void MostrarCantidadPedidosDeCadetes(Cadeteria Cad)
     {
-        Console.WriteLine("\n **************** Cantidad de Pedidos ****************");
+        Console.WriteLine("\n **************** Cantidad de Pedidos por Cadete ****************");
         foreach (var cad in Cad.ListadeCadetes)
         {
-            Console.WriteLine($"ID: {cad.Id}      Nombre: {cad.Nombre}        CantPedidos: {cad.CantidadDePendientes()}");
+            Console.WriteLine($"ID: {cad.Id}      Nombre: {cad.Nombre}        CantPedidos: {Cad.CantPedidosCadete(cad.Id,EstadoPedido.Pendiente)}");
 
         }
         Console.WriteLine("\n");
@@ -153,10 +212,10 @@ internal class Program
 
         Console.WriteLine("\n************** Informe **************");
         Console.WriteLine($"Cantidad de Cadetes: {informe.CantCadetes}");
-        Console.WriteLine($"\nID            Nombre          cant. Pedidos Entregados            Monto Ganado\n");
+        Console.WriteLine($"\nID                Nombre                      cant. Pedidos Entregados            Monto Ganado\n");
         for (int i = 0; i < informe.CantCadetes; i++)
         {
-            Console.WriteLine($"{informe.IdCadetes[i]}             {informe.NombresCadetes[i]}            {informe.CantPedidosEntregadosporCadetes[i]}           {informe.MontoCadetes[i]}");
+            Console.WriteLine($"{informe.IdCadetes[i]}              {informe.NombresCadetes[i]}                             {informe.CantPedidosEntregadosporCadetes[i]}                                  {informe.MontoCadetes[i]}");
         }
         Console.WriteLine($"\n Total de Pedidos Entregados: {informe.TotalPedidosEntregados}");
         Console.WriteLine($"\n Cantidad promedio de Pedidos Entregados por cadete: {informe.CantPromedioDePedidosEntregados}");

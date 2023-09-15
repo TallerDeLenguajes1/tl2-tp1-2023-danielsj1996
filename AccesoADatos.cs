@@ -43,8 +43,7 @@ public class AccesoCSV : AccesoDatosCadeteria
     {
         List<Cadete> cadetes = new List<Cadete>();
 
-        if (ExisteArchivoDatos(rutaDatosCadetes))
-        {
+
             string linea = "";
             string[] datosCadete;
 
@@ -58,7 +57,7 @@ public class AccesoCSV : AccesoDatosCadeteria
                 }
             }
 
-        }
+    
 
         return cadetes;
     }
