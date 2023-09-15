@@ -14,14 +14,7 @@ public class Cadete
     public string? Telefono { get => telefono; set => telefono = value; }
     public List<Pedido> ListadePedidos { get => listadepedidos; }
 
-    public Cadete(int id, string nombre, string direccion, string telefono)
-    {
-        this.id = id;
-        this.nombre = nombre;
-        this.Direccion = direccion;
-        this.Telefono = telefono;
-        this.listadepedidos = new List<Pedido>();
-    }
+
 
     public Cadete(string id, string nombre, string direccion, string telefono)
     {
